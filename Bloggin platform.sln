@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bloggin platform", "Bloggin platform\Bloggin platform.csproj", "{A2A02AC1-7C15-48B0-8F45-60573FEA0131}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bloggin_platform.test", "Bloggin_platform.test\Bloggin_platform.test.csproj", "{0D30252E-C9BF-427C-84F0-2937F20C8E77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2A02AC1-7C15-48B0-8F45-60573FEA0131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2A02AC1-7C15-48B0-8F45-60573FEA0131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2A02AC1-7C15-48B0-8F45-60573FEA0131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2A02AC1-7C15-48B0-8F45-60573FEA0131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D30252E-C9BF-427C-84F0-2937F20C8E77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D30252E-C9BF-427C-84F0-2937F20C8E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D30252E-C9BF-427C-84F0-2937F20C8E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D30252E-C9BF-427C-84F0-2937F20C8E77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F5435F0-863D-477D-8632-7D20B792BED1}
+	EndGlobalSection
+EndGlobal
