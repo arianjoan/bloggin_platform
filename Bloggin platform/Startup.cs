@@ -32,17 +32,16 @@ namespace Bloggin_platform
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Code to use database in memory
+            /*services.AddControllers().AddNewtonSoftJson(o => o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddDbContext<BaseDbContext, AppDbContext>(options =>
+             {
+                 options.UseInMemoryDatabase("bloggin-platform-in-memory");
+             });*/
+
             services.AddControllers();
-
-            //services.AddControllers().AddNewtonSoftJson(o => o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
-            //services.AddDbContext<BaseDbContext,AppDbContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase("bloggin-platform-in-memory");
-            //});
 
             services.AddDbContext<BaseDbContext,SqlDbContext>();
 
@@ -76,7 +75,6 @@ namespace Bloggin_platform
             services.AddAutoMapper(typeof(Startup));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

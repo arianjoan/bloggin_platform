@@ -12,8 +12,6 @@ namespace Bloggin_platform.Persistance.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<User>().Property(p => p.Role).HasConversion<string>();
-
             builder.Entity<User>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Post>().HasQueryFilter(p => !p.IsDeleted);
         }

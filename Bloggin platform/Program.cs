@@ -15,14 +15,17 @@ namespace Bloggin_platform
     {
         public static void Main(string[] args)
         {
-           // var host = CreateHostBuilder(args).Build();
+            //Code to use database in memory.
+            /* var host = CreateHostBuilder(args).Build();
+            using (var scope = host.Services.CreateScope())
+            using (var context = scope.ServiceProvider.GetService<BaseDbContext>())
+            {
+                context.Database.EnsureCreated();
+            }
+            host.Run();*/
+
+            //Code to use real database
             CreateHostBuilder(args).Build().Run();
-            //using (var scope = host.Services.CreateScope())
-            //using (var context = scope.ServiceProvider.GetService<BaseDbContext>())
-            //{
-            //    context.Database.EnsureCreated();
-            //}
-            //host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
