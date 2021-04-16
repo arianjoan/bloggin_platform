@@ -26,12 +26,12 @@ namespace Bloggin_platform.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<PostDto>> GetPosts(string idClaim)
+        public async Task<IEnumerable<PostDto>> GetPosts(int? currentUserId)
         {
             var posts = (IEnumerable<Post>)null;
-
-            if (int.TryParse(idClaim, out int result))
-                posts = await _postsRepository.GetPostsForUserLogged(result);
+            
+            if (currentUserId.HasValue)
+                posts = await _postsRepository.GetPostsForUserLogged(currentUserId.Value);
             else
                 posts = await _postsRepository.GetPosts();
 
@@ -39,10 +39,10 @@ namespace Bloggin_platform.Services
             return postsDto;
         }
 
-        public async Task<PostInsertDto> AddPost(PostInsertDto postDto, string idClaim)
+        public async Task<PostInsertDto> AddPost(PostInsertDto postDto, int? currentUserId)
         {
             var post = _mapper.Map<PostInsertDto, Post>(postDto);
-            post.AuthorId = int.Parse(idClaim);
+            post.AuthorId = currentUserId.Value;
 
             await _postsRepository.AddPost(post);
             await _unitOfWork.CompleteAsync();
@@ -50,14 +50,14 @@ namespace Bloggin_platform.Services
             return postDto;
         }
 
-        public async Task UpdatePost(PostInsertDto post, int id, string idClaim)
+        public async Task UpdatePost(PostInsertDto post, int id, int? currentUserId)
         {
             var postToUpdate = await _postsRepository.GetPostById(id);
 
             if (postToUpdate == null)
                 throw new PostNotFoundException(id.ToString());
 
-            if (!postToUpdate.AuthorId.Equals(int.Parse(idClaim)))
+            if (!postToUpdate.AuthorId.Equals(currentUserId.Value))
                 throw new UserHasNotPermissionException();
 
             postToUpdate.Text = post.Text ?? postToUpdate.Text;
@@ -68,14 +68,14 @@ namespace Bloggin_platform.Services
 
         }
 
-        public async Task RemovePost(int id, string idClaim)
+        public async Task RemovePost(int id, int? currentUserId)
         {
             var postToDelete = await _postsRepository.GetPostById(id);
 
             if (postToDelete == null)
                 throw new PostNotFoundException(id.ToString());
 
-            if (!postToDelete.AuthorId.Equals(int.Parse(idClaim)))
+            if (!postToDelete.AuthorId.Equals(currentUserId.Value))
                 throw new UserHasNotPermissionException();
 
             _postsRepository.RemovePost(postToDelete);

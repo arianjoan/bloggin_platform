@@ -60,7 +60,7 @@ namespace Bloggin_platform.test
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act
-            var result = await _postService.GetPosts("3");
+            var result = await _postService.GetPosts(3);
 
             //Assert
             Assert.AreEqual(expected, result);
@@ -75,7 +75,7 @@ namespace Bloggin_platform.test
             _postRepositoryMock.Setup(p => p.GetPostById(It.IsAny<int>())).ReturnsAsync((Post)null);
 
             //Act and Assert
-            Assert.ThrowsAsync<PostNotFoundException>(() => _postService.UpdatePost(postToUpdate, 2, "3"));
+            Assert.ThrowsAsync<PostNotFoundException>(() => _postService.UpdatePost(postToUpdate, 2, 3));
 
         }
 
@@ -88,7 +88,7 @@ namespace Bloggin_platform.test
             _postRepositoryMock.Setup(p => p.GetPostById(post.Id)).ReturnsAsync(post);
 
             //Act and Assert
-            Assert.ThrowsAsync<UserHasNotPermissionException>(() => _postService.UpdatePost(postToUpdate, post.Id, "2"));
+            Assert.ThrowsAsync<UserHasNotPermissionException>(() => _postService.UpdatePost(postToUpdate, post.Id, 2));
 
         }
 
@@ -101,7 +101,7 @@ namespace Bloggin_platform.test
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act and Assert
-            Assert.ThrowsAsync<PostNotFoundException>(() => _postService.RemovePost(3, "3"));
+            Assert.ThrowsAsync<PostNotFoundException>(() => _postService.RemovePost(3, 3));
 
         }
 
@@ -115,7 +115,7 @@ namespace Bloggin_platform.test
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act and Assert
-            Assert.ThrowsAsync<UserHasNotPermissionException>(() => _postService.RemovePost(postToRemove.Id, "2"));
+            Assert.ThrowsAsync<UserHasNotPermissionException>(() => _postService.RemovePost(postToRemove.Id, 2));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Bloggin_platform.Dtos.Post;
 using Bloggin_platform.Exceptions;
 using Bloggin_platform.Services.Contracts;
+using Bloggin_platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,13 +29,7 @@ namespace Bloggin_platform.Controllers
         {
             try
             {
-                var isLogged = User.HasClaim(u => u.Type == "id");
-                var idClaim = string.Empty;
-
-                if (isLogged)
-                    idClaim = User.Claims.First(c => c.Type.Equals("id")).Value;
-
-                var posts = await _postsService.GetPosts(idClaim);
+                var posts = await _postsService.GetPosts(ClaimResolver.getUserIdFromToken(User));
 
                 return Ok(posts);
             }
@@ -50,9 +45,7 @@ namespace Bloggin_platform.Controllers
         {
             try
             {
-                var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
-
-                var postAdded = await _postsService.AddPost(post,idClaim);
+                var postAdded = await _postsService.AddPost(post, ClaimResolver.getUserIdFromToken(User));
 
                 return Ok(postAdded);
             }
@@ -67,9 +60,7 @@ namespace Bloggin_platform.Controllers
         {
             try
             {
-                var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
-
-                await  _postsService.UpdatePost(post, id, idClaim);
+                await  _postsService.UpdatePost(post, id, ClaimResolver.getUserIdFromToken(User));
 
                 return Ok("The post was updated successfully");
             }
@@ -92,9 +83,7 @@ namespace Bloggin_platform.Controllers
         {
             try
             {
-                var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
-
-                await _postsService.RemovePost(id, idClaim);
+                await _postsService.RemovePost(id, ClaimResolver.getUserIdFromToken(User));
 
                 return Ok("The post was deleted succesfully");
             }
