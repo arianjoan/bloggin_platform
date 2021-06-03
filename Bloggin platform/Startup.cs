@@ -43,7 +43,7 @@ namespace Bloggin_platform
 
             services.AddControllers();
 
-            services.AddDbContext<BaseDbContext,SqlDbContext>();
+            services.AddDbContext<BaseDbContext,MySqlDbContext>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
