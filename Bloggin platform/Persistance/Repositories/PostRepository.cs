@@ -10,13 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bloggin_platform.Persistance.Repositories
 {
-    public class PostRepository : /*BaseDbContext*/ BaseRepository<Post>, IPostRepository
+    public class PostRepository : BaseRepository<Post>, IPostRepository
     {
 
         public PostRepository(BaseDbContext context) : base (context)
         {
         }
-        public override async Task<IEnumerable<Post>> /*GetPosts*/ GetAllAsync()
+        public override async Task<IEnumerable<Post>> GetAllAsync()
         {
             var posts = await _context.Posts.Include(p => p.Author)
                 .Where(u => u.State.Equals(EState.Public))

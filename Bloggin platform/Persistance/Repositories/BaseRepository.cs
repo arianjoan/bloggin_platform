@@ -24,7 +24,7 @@ namespace Bloggin_platform.Persistance.Repositories
             await _context.AddAsync(entity);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> condition)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> condition)
         {
             return await DbSet.Where(condition).ToListAsync();
         }
@@ -32,6 +32,11 @@ namespace Bloggin_platform.Persistance.Repositories
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await DbSet.ToListAsync();
+        }
+
+        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> condition)
+        {
+            return await DbSet.FirstOrDefaultAsync(condition);
         }
 
         public virtual async Task<TEntity> GetByIdAsync(int id)

@@ -14,6 +14,7 @@ namespace Bloggin_platform.Persistance.Repositories.Contracts
         void Remove(TEntity entity);
 
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> condition);
+        Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> condition);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> condition);
     }
 }
