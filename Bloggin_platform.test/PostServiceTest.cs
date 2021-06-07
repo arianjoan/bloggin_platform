@@ -38,7 +38,7 @@ namespace Bloggin_platform.test
             var posts = new List<Post> { new Post { Id = 1, Text = "text test" }, new Post { Id = 2, Text = "text test2" } };
             _mapperMock.Setup(p => p.Map<IEnumerable<Post>, IEnumerable<PostDto>>(posts)).Returns(expected);
             _postRepositoryMock.Setup(p => p.GetPostsForUserLogged(3));
-            _postRepositoryMock.Setup(p => p.GetPosts()).ReturnsAsync(posts);
+            _postRepositoryMock.Setup(p => p.GetAllAsync()).ReturnsAsync(posts);
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act
@@ -56,7 +56,7 @@ namespace Bloggin_platform.test
             var posts = new List<Post> { new Post { Id = 1, Text = "text test" }, new Post { Id = 2, Text = "text test2" } };
             _mapperMock.Setup(p => p.Map<IEnumerable<Post>, IEnumerable<PostDto>>(posts)).Returns(expected);
             _postRepositoryMock.Setup(p => p.GetPostsForUserLogged(3)).ReturnsAsync(posts);
-            _postRepositoryMock.Setup(p => p.GetPosts());
+            _postRepositoryMock.Setup(p => p.GetAllAsync());
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act
@@ -72,7 +72,7 @@ namespace Bloggin_platform.test
             //Arrange
             var postToUpdate= new PostInsertDto { Text = "Test text", Title = "Test title"};
             var post = new Post { Text = "new text", Title = "new title", AuthorId = 3 };
-            _postRepositoryMock.Setup(p => p.GetPostById(It.IsAny<int>())).ReturnsAsync((Post)null);
+            _postRepositoryMock.Setup(p => p.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Post)null);
 
             //Act and Assert
             Assert.ThrowsAsync<PostNotFoundException>(() => _postService.UpdatePost(postToUpdate, 2, 3));
@@ -85,7 +85,7 @@ namespace Bloggin_platform.test
             //Arrange
             var postToUpdate = new PostInsertDto { Text = "Test text", Title = "Test title" };
             var post = new Post { Text = "new text", Title = "new title", AuthorId = 3 , Id = 2};
-            _postRepositoryMock.Setup(p => p.GetPostById(post.Id)).ReturnsAsync(post);
+            _postRepositoryMock.Setup(p => p.GetByIdAsync(post.Id)).ReturnsAsync(post);
 
             //Act and Assert
             Assert.ThrowsAsync<UserHasNotPermissionException>(() => _postService.UpdatePost(postToUpdate, post.Id, 2));
@@ -96,8 +96,8 @@ namespace Bloggin_platform.test
         {
             //Arrange
             var postToRemove = new Post { Id = 2, Text = "Text to delete", AuthorId = 3 };
-            _postRepositoryMock.Setup(p => p.GetPostById(It.IsAny<int>())).ReturnsAsync((Post)null);
-            _postRepositoryMock.Setup(p => p.RemovePost(postToRemove));
+            _postRepositoryMock.Setup(p => p.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Post)null);
+            _postRepositoryMock.Setup(p => p.Remove(postToRemove));
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act and Assert
@@ -110,8 +110,8 @@ namespace Bloggin_platform.test
         {
             //Arrange
             var postToRemove = new Post { Id = 2, Text = "Text to delete", AuthorId = 3 };
-            _postRepositoryMock.Setup(p => p.GetPostById(postToRemove.Id)).ReturnsAsync(postToRemove);
-            _postRepositoryMock.Setup(p => p.RemovePost(postToRemove));
+            _postRepositoryMock.Setup(p => p.GetByIdAsync(postToRemove.Id)).ReturnsAsync(postToRemove);
+            _postRepositoryMock.Setup(p => p.Remove(postToRemove));
             _unitOfWorkMock.Setup(p => p.CompleteAsync());
 
             //Act and Assert

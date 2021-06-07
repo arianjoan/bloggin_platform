@@ -35,7 +35,7 @@ namespace Bloggin_platform.test
             //Arrange
             var users = new List<User> { new User { Id = 1, Name = "Arian" }, new User { Id = 2, Name = "Macchi"} };
             var usersDto = new List<UserDto> { new UserDto { Id = 1, Name = "Arian" }, new UserDto { Id = 2, Name = "Macchi" } };
-            _userRepositoryMock.Setup(u => u.GetUsers()).ReturnsAsync(users);
+            _userRepositoryMock.Setup(u => u.GetAllAsync()).ReturnsAsync(users);
             _mapperMock.Setup(u => u.Map<IEnumerable<User>, IEnumerable<UserDto>>(users)).Returns(usersDto);
 
             //Act
@@ -51,7 +51,7 @@ namespace Bloggin_platform.test
             //Arrange
             var user = new User { Name = "Arian", LastName = "Joan" };
             var userInsertDto = new UserInsertDto { Name = "Arian", LastName = "Joan" };
-            _userRepositoryMock.Setup(u => u.AddUser(user));
+            _userRepositoryMock.Setup(u => u.AddAsync(user));
             _mapperMock.Setup(u => u.Map<UserInsertDto, User>(userInsertDto)).Returns(user);
 
             //Act
@@ -71,8 +71,8 @@ namespace Bloggin_platform.test
             var userDto = new UserDto { Name = "Arian", LastName = "Joan" };
             _mapperMock.Setup(u => u.Map<UserInsertDto, User>(userInsertDto)).Returns(user);
             _mapperMock.Setup(u => u.Map<User, UserDto>(userToUpdate)).Returns(userDto);
-            _userRepositoryMock.Setup(u => u.FindUserById(2)).ReturnsAsync(user);
-            _userRepositoryMock.Setup(u => u.UpdateUser(userToUpdate));
+            _userRepositoryMock.Setup(u => u.GetByIdAsync(2)).ReturnsAsync(user);
+            _userRepositoryMock.Setup(u => u.Update(userToUpdate));
             _unitOfWorkMock.Setup(u => u.CompleteAsync());
 
             //Act
@@ -93,8 +93,8 @@ namespace Bloggin_platform.test
             var userDto = new UserDto { Name = "Arian", LastName = "Joan" };
             _mapperMock.Setup(u => u.Map<UserInsertDto, User>(userInsertDto)).Returns(user);
             _mapperMock.Setup(u => u.Map<User, UserDto>(userToUpdate)).Returns(userDto);
-            _userRepositoryMock.Setup(u => u.FindUserById(2)).ReturnsAsync((User)null);
-            _userRepositoryMock.Setup(u => u.UpdateUser(userToUpdate));
+            _userRepositoryMock.Setup(u => u.GetByIdAsync(2)).ReturnsAsync((User)null);
+            _userRepositoryMock.Setup(u => u.Update(userToUpdate));
             _unitOfWorkMock.Setup(u => u.CompleteAsync());
 
             //Act and Assert
@@ -107,8 +107,8 @@ namespace Bloggin_platform.test
         {
             //Arrange
             var userToRemove = new User { Id = 2, Name = "Arian" };
-            _userRepositoryMock.Setup(u => u.FindUserById(2)).ReturnsAsync(userToRemove);
-            _userRepositoryMock.Setup(u => u.RemoveUser(userToRemove));
+            _userRepositoryMock.Setup(u => u.GetByIdAsync(2)).ReturnsAsync(userToRemove);
+            _userRepositoryMock.Setup(u => u.Remove(userToRemove));
             _unitOfWorkMock.Setup(u => u.CompleteAsync());
 
             //Act and assert
@@ -120,8 +120,8 @@ namespace Bloggin_platform.test
         {
             //Arrange
             var userToRemove = new User { Id = 2, Name = "Arian" };
-            _userRepositoryMock.Setup(u => u.FindUserById(2)).ReturnsAsync((User)null);
-            _userRepositoryMock.Setup(u => u.RemoveUser(userToRemove));
+            _userRepositoryMock.Setup(u => u.GetByIdAsync(2)).ReturnsAsync((User)null);
+            _userRepositoryMock.Setup(u => u.Remove(userToRemove));
             _unitOfWorkMock.Setup(u => u.CompleteAsync());
 
             //Act and Assert
