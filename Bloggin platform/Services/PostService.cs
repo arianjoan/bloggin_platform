@@ -33,7 +33,7 @@ namespace Bloggin_platform.Services
             if (currentUserId.HasValue)
                 posts = await _postsRepository.GetPostsForUserLogged(currentUserId.Value);
             else
-                posts = await _postsRepository.GetPosts();
+                posts = await _postsRepository.GetAllAsync();
 
             var postsDto = _mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(posts);
             return postsDto;
@@ -44,7 +44,7 @@ namespace Bloggin_platform.Services
             var post = _mapper.Map<PostInsertDto, Post>(postDto);
             post.AuthorId = currentUserId.Value;
 
-            await _postsRepository.AddPost(post);
+            await _postsRepository.AddAsync(post);
             await _unitOfWork.CompleteAsync();
 
             return postDto;
@@ -52,7 +52,7 @@ namespace Bloggin_platform.Services
 
         public async Task UpdatePost(PostInsertDto post, int id, int? currentUserId)
         {
-            var postToUpdate = await _postsRepository.GetPostById(id);
+            var postToUpdate = await _postsRepository.GetByIdAsync(id);
 
             if (postToUpdate == null)
                 throw new PostNotFoundException(id.ToString());
@@ -63,14 +63,14 @@ namespace Bloggin_platform.Services
             postToUpdate.Text = post.Text ?? postToUpdate.Text;
             postToUpdate.Title = post.Title ?? postToUpdate.Title;
 
-            _postsRepository.UpdatePost(postToUpdate);
+            _postsRepository.Update(postToUpdate);
             await _unitOfWork.CompleteAsync();
 
         }
 
         public async Task RemovePost(int id, int? currentUserId)
         {
-            var postToDelete = await _postsRepository.GetPostById(id);
+            var postToDelete = await _postsRepository.GetByIdAsync(id);
 
             if (postToDelete == null)
                 throw new PostNotFoundException(id.ToString());
@@ -78,7 +78,7 @@ namespace Bloggin_platform.Services
             if (!postToDelete.AuthorId.Equals(currentUserId.Value))
                 throw new UserHasNotPermissionException();
 
-            _postsRepository.RemovePost(postToDelete);
+            _postsRepository.Remove(postToDelete);
             await _unitOfWork.CompleteAsync();
         }
     }

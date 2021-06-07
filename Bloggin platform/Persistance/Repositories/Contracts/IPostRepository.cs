@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bloggin_platform.Persistance.Repositories.Contracts
 {
-    public interface IPostRepository
+    public interface IPostRepository : IBaseRepository<Post>
     {
-        public Task<IEnumerable<Post>> GetPosts();
-        public Task AddPost(Post post);
-        public Task<Post> GetPostById(int id);
-        public void UpdatePost(Post post);
-        public void RemovePost(Post post);
         public Task<IEnumerable<Post>> GetPostsForUserLogged(int id);
 
     }

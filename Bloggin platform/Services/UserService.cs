@@ -26,7 +26,7 @@ namespace Bloggin_platform.Services
 
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            var users = await _UserRepository.GetUsers();
+            var users = await _UserRepository.GetAllAsync();
             var usersDTO = _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
             return usersDTO;
         }
@@ -34,7 +34,7 @@ namespace Bloggin_platform.Services
         public async Task<UserInsertDto> AddUser (UserInsertDto userDto)
         {
             var user = _mapper.Map<UserInsertDto, User>(userDto);
-            await _UserRepository.AddUser(user);
+            await _UserRepository.AddAsync(user);
             await _unitOfWork.CompleteAsync();
             return userDto;
         }
@@ -43,14 +43,14 @@ namespace Bloggin_platform.Services
         {
             var user = _mapper.Map<UserInsertDto, User>(userDto);
 
-            var userToUpdate = await _UserRepository.FindUserById(id);
+            var userToUpdate = await _UserRepository.GetByIdAsync(id);
             if (userToUpdate == null)
                 throw new UserNotFoundException(id.ToString());
 
             userToUpdate.Name = user.Name;
             userToUpdate.LastName = user.LastName;
 
-            _UserRepository.UpdateUser(userToUpdate);
+            _UserRepository.Update(userToUpdate);
             await _unitOfWork.CompleteAsync();
 
             var userUpdated = _mapper.Map<User, UserDto>(userToUpdate);
@@ -61,11 +61,11 @@ namespace Bloggin_platform.Services
 
         public async Task RemoveUser(int id)
         {
-            var userToRemove = await _UserRepository.FindUserById(id);
+            var userToRemove = await _UserRepository.GetByIdAsync(id);
             if (userToRemove == null)
                 throw new UserNotFoundException(id.ToString());
 
-            _UserRepository.RemoveUser(userToRemove);
+            _UserRepository.Remove(userToRemove);
             await _unitOfWork.CompleteAsync();
         }
     }

@@ -10,16 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bloggin_platform.Persistance.Repositories
 {
-    public class PostRepository : BaseDbContext, IPostRepository
+    public class PostRepository : /*BaseDbContext*/ BaseRepository<Post>, IPostRepository
     {
 
-        private readonly BaseDbContext _context;
-
-        public PostRepository(BaseDbContext context) 
+        public PostRepository(BaseDbContext context) : base (context)
         {
-            _context = context;
         }
-        public async Task<IEnumerable<Post>> GetPosts()
+        public override async Task<IEnumerable<Post>> /*GetPosts*/ GetAllAsync()
         {
             var posts = await _context.Posts.Include(p => p.Author)
                 .Where(u => u.State.Equals(EState.Public))
@@ -36,25 +33,5 @@ namespace Bloggin_platform.Persistance.Repositories
             return posts;
         }
 
-        public async Task AddPost(Post post)
-        {
-            await _context.AddAsync(post);
-        }
-
-        public async Task<Post> GetPostById(int id)
-        {
-            var post = await _context.Posts.FindAsync(id);
-            return post;
-        }
-
-        public void UpdatePost(Post post)
-        {
-            _context.Posts.Update(post);
-        }
-
-        public void RemovePost(Post post)
-        {
-            _context.Posts.Remove(post);
-        }
     }
 }
