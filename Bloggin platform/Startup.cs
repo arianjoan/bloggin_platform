@@ -43,15 +43,7 @@ namespace Bloggin_platform
 
             services.AddControllers();
 
-            services.AddDbContext<BaseDbContext,MySqlDbContext>();
-
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPostService, PostService>();
-
-            services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services = services.configureDependencies();
 
             services.AddAuthentication(x =>
             {
